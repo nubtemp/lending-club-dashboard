@@ -1,0 +1,6 @@
+*.csv
+*.csv.gz
+*.bat
+__pycache__/
+.env
+.DS_Store
