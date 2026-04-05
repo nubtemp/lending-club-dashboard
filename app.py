@@ -4,6 +4,7 @@ Internal Fintech Credit Risk Dashboard
 Powered by XGBoost · Streamlit · Plotly
 """
 
+import io
 import os
 import glob
 import hashlib
@@ -742,7 +743,7 @@ def train_model(_data_hash: str, df_json: str):
     from sklearn.metrics import roc_auc_score, confusion_matrix, roc_curve
     from xgboost import XGBClassifier
 
-    df = pd.read_json(df_json)
+    df = pd.read_json(io.StringIO(df_json))
     df, feats = engineer_features(df)
     X, y = df[feats], df["default"]
     X_tr, X_te, y_tr, y_te = train_test_split(
@@ -840,7 +841,7 @@ def compare_all_strategies(
     df_json: str, _data_hash: str, risk_tol: int, capital: float
 ) -> dict:
     """Compute metrics for all four strategies at current settings (cached)."""
-    df = pd.read_json(df_json)
+    df = pd.read_json(io.StringIO(df_json))
     return {
         s: build_portfolio(df, s, risk_tol, capital)[1]
         for s in STRATS
